@@ -1,1 +1,50 @@
 YOUR PROTOCOL DEFINITION GOES HERE
+
+The protocol is designed in order to provide a more solid foundation for implementation, it do
+not consider the payload utilization. One may of course use a single byte insead of a string
+to issue the request. Moreover, the implementation of the protocol assume the data received
+is accurate (not corrupted) from both "dequeuing_incoming" functions. If that is not the case,
+one may reserve 2 bytes of the payload as the checksum (CRC-16) but that is not implemented.
+
+The following scenerio showcase only the successfull commnunication among BACKEND, GATEWAY and
+SENSOR. If any response or request are either unknown or unexpected, the receiver side will
+send back "INVALID" or resend the previous message at most "MAX_RETRY" (in "gateway_state.h") time
+
+for any invalid request
+1. BACKEND send unknown/invalid request to GATEWAY
+2. GATEWAY send "INVALID" (7 bytes) to BACKEND
+
+"ping gateway" request
+1. BACKEND send "PING_GATEWAY" (12 bytes) to GATEWAY
+2. GATEWAY send "PONG_GATEWAY" (12 bytes) to BACKEND
+
+"ping sensor" request
+1. BACKEND send "PING_SENSOR" (10 bytes) to GATEWAY
+2. GATEWAY send "PING_SENSOR" (10 bytes) to SENSOR
+3. SENSOR send "PONG_SENSOR" (10 bytes) to GATEWAY
+4. GATEWAY send "PONG_SENSOR" (10 bytes) to BACKEND
+
+"restart gateway" request
+1. BACKEND send "RESTART_GATEWAY" (15 bytes) to GATEWAY
+
+"restart sensor" request
+1. BACKEND send "RESTART_SENSOR" (14 bytes) to GATEWAY
+2. GATEWAY send "RESTART_SENSOR" (14 bytes) to SENSOR
+
+"add ki" request
+1. BACKEND send "ADD_KI_SENSOR"+token (13 + (128/8) = 29 bytes) to GATEWAY
+2. GATEWAY send "ADD_KI_SENSOR"+token (29 bytes) to SENSOR
+3. SENSOR send "ADD_KI_SENSOR"+token (29 bytes) to GATEWAY
+4. GATEWAY send "ADD_KI_SENSOR"+token (29 bytes) to BACKEND
+
+"remove ki" request
+1. BACKEND send "REMOVE_KI_SENSOR"+token (16 + (128/8) = 32 bytes) to GATEWAY
+2. GATEWAY send "REMOVE_KI_SENSOR"+token (32 bytes) to SENSOR
+3. SENSOR send "REMOVE_KI_SENSOR"+token (32 bytes) to GATEWAY
+4. GATEWAY send "REMOVE_KI_SENSOR"+token (32 bytes) to BACKEND
+
+"open door" request
+1. BACKEND send "OPEN_DOOR" (9 bytes) to GATEWAY
+2. GATEWAY send "OPEN_DOOR" (9 bytes) to SENSOR
+3. SENSOR send "DOOR_OPEN" (9 bytes) to GATEWAY
+4. GATEWAY send "DOOR_OPEN" (9 bytes) to BACKEND

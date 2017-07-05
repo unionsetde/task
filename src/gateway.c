@@ -1,7 +1,8 @@
 #include "gateway/modem.h"
 #include "gateway/wireless.h"
 #include "common/device.h"
-#include "gateway.h"
+#include "gateway_state.h"
+#include "gateway_service.h"
 
 /**
  * This function is polled by the main loop and should handle any packets coming
@@ -26,18 +27,19 @@ void handle_communication(void)
     }
     else if (service.state == LISTENING){
       if (service.num_of_message == 0){
-        decode_backend_request(&service, data, length);
+        initialize_backend_request(&service, data, length);
       }
       else{
-        proceed_service(&service);
+        proceed_service_gateway(&service);
       }
     }
     else if (service.state == TALKING){
-      proceed_service(&service);
+      proceed_service_gateway(&service);
     }
-    update_state(&service);
+    update_state_gateway(&service);
     cnt += 1;
   }
-  free_service(service);
+  free_service_gateway(service);
+
   return;
 }
