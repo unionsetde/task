@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "gateway_state.h"
 #include "gateway_service.h"
 
@@ -28,7 +29,7 @@ void update_state_gateway(SERVICE_GATEWAY *service)
 {
   if (service->state == LISTENING){
     if (service->event == TIME_OUT){
-      reset_service(service);
+      reset_service_gateway(service);
       service->state = IDLE;
     }
     else if (service->event == RETURN_REPLY) service->state = TALKING;
@@ -38,7 +39,7 @@ void update_state_gateway(SERVICE_GATEWAY *service)
   }
   else if (service->state == TALKING){
     if (service->event == END_TALKING){
-      reset_service(service);
+      reset_service_gateway(service);
       service->state = IDLE;
     }
     else if (service->event == STILL_TALKING) service->state = TALKING;

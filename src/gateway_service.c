@@ -1,5 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
+#include "gateway/modem.h"
+#include "gateway/wireless.h"
+#include "common/device.h"
 #include "gateway_state.h"
 #include "gateway_service.h"
 
@@ -151,6 +154,7 @@ void proceed_INVALID(SERVICE_GATEWAY *service)
       service->num_of_message -= 1;
   }
   service->event = END_TALKING;
+
   return;
 }
 

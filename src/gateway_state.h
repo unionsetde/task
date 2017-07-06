@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <stdint.h>
+
 typedef enum
 {
   IDLE,
@@ -20,8 +23,6 @@ typedef enum
   DATA_INCOMING,
 } EVENT;
 
-#define MAX_RETRY 10
-
 typedef enum
 {
   INVALID,
@@ -33,6 +34,8 @@ typedef enum
   REMOVE_KI_SENSOR,
   OPEN_DOOR_SENSOR,
 } REQUEST_BACKEND;
+
+#define MAX_RETRY 10
 
 typedef struct SERVICE_GATEWAY {
   REQUEST_BACKEND request;

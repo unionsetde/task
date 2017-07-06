@@ -1,5 +1,3 @@
-uint8_t* reformat_incoming_data(uint8_t const **data, size_t length);
-
 void initialize_INVALID(SERVICE_GATEWAY *service);
 void initialize_PING_SENSOR(SERVICE_GATEWAY *service);
 void initialize_PING_GATEWAY(SERVICE_GATEWAY *service);
